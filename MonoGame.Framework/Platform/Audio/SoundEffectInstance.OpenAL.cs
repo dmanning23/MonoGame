@@ -20,6 +20,8 @@ namespace Microsoft.Xna.Framework.Audio
         float filterQ;
         float frequency;
         int pauseCount;
+
+        internal readonly object sourceMutex = new object();
         
         internal OpenALSoundController controller;
         
@@ -167,26 +169,35 @@ namespace Microsoft.Xna.Framework.Audio
 
         private void PlatformStop(bool immediate)
         {
-            if (HasSourceId)
-            {
-                AL.SourceStop(SourceId);
-                ALHelper.CheckError("Failed to stop source.");
-
-                // Reset the SendFilter to 0 if we are NOT using reverb since 
-                // sources are recycled
-                if (OpenALSoundController.Instance.SupportsEfx)
-                {
-                    OpenALSoundController.Efx.BindSourceToAuxiliarySlot(SourceId, 0, 0, 0);
-                    ALHelper.CheckError("Failed to unset reverb.");
-                    AL.Source(SourceId, ALSourcei.EfxDirectFilter, 0);
-                    ALHelper.CheckError("Failed to unset filter.");
-                }
-                AL.Source(SourceId, ALSourcei.Buffer, 0);
-                ALHelper.CheckError("Failed to free source from buffer.");
-
-                controller.FreeSource(this);
-            }
+            FreeSource();
             SoundState = SoundState.Stopped;
+        }
+
+        private void FreeSource()
+        {
+            if (!HasSourceId)
+                return;
+
+            lock (sourceMutex)
+            {
+                if (HasSourceId && AL.IsSource(SourceId))
+                {
+                    AL.SourceStop(SourceId);
+                    ALHelper.CheckError("Failed to stop source.");
+
+                    // Reset the SendFilter to 0 if we are NOT using reverb since
+                    // sources are recycled
+                    if (OpenALSoundController.Instance.SupportsEfx)
+                    {
+                        OpenALSoundController.Efx.BindSourceToAuxiliarySlot(SourceId, 0, 0, 0);
+                        ALHelper.CheckError("Failed to unset reverb.");
+                        AL.Source(SourceId, ALSourcei.EfxDirectFilter, 0);
+                        ALHelper.CheckError("Failed to unset filter.");
+                    }
+
+                    controller.FreeSource(this);
+                }
+            }
         }
 
         private void PlatformSetIsLooped(bool value)
@@ -350,7 +361,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         private void PlatformDispose(bool disposing)
         {
-            
+            FreeSource();
         }
     }
 }

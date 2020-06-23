@@ -129,7 +129,7 @@ namespace Microsoft.Xna.Framework
 
             _handle = Sdl.Window.Create("", 0, 0,
                 GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight,
-                Sdl.Window.State.Hidden);
+                Sdl.Window.State.Hidden | Sdl.Window.State.FullscreenDesktop);
         }
 
         internal void CreateWindow()
@@ -298,11 +298,6 @@ namespace Microsoft.Xna.Framework
             Sdl.Window.GetSize(Handle, out _width, out _height);
 
             OnClientSizeChanged();
-        }
-
-        public void CallTextInput(char c, Keys key = Keys.None)
-        {
-            OnTextInput(this, new TextInputEventArgs(c, key));
         }
 
         protected internal override void SetSupportedOrientations(DisplayOrientation orientations)

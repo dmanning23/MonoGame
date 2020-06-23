@@ -146,7 +146,7 @@ namespace MonoGame.Framework
             ChangeClientSize(new Size(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight));
 
             SetIcon();
-            Title = Utilities.AssemblyHelper.GetDefaultWindowTitle();
+            Title = MonoGame.Utilities.AssemblyHelper.GetDefaultWindowTitle();
 
             Form.MaximizeBox = false;
             Form.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -340,7 +340,7 @@ namespace MonoGame.Framework
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
             var key = (Keys) (VkKeyScanEx(e.KeyChar, InputLanguage.CurrentInputLanguage.Handle) & 0xff);
-            OnTextInput(sender, new TextInputEventArgs(e.KeyChar, key));
+            OnTextInput(new TextInputEventArgs(e.KeyChar, key));
         }
 
         internal void Initialize(int width, int height)
