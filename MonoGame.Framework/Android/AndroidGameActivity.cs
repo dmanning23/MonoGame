@@ -6,12 +6,13 @@ using System;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Views;
 
 namespace Microsoft.Xna.Framework
 {
 	[CLSCompliant(false)]
-    public class AndroidGameActivity : Activity
+    public class AndroidGameActivity : AppCompatActivity
     {
         internal Game Game { private get; set; }
 
@@ -30,7 +31,7 @@ namespace Microsoft.Xna.Framework
 		/// </param>
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
-            RequestWindowFeature(WindowFeatures.NoTitle);
+            //RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(savedInstanceState);
 
 			IntentFilter filter = new IntentFilter();
@@ -74,7 +75,7 @@ namespace Microsoft.Xna.Framework
                 var deviceManager = (IGraphicsDeviceManager)Game.Services.GetService(typeof(IGraphicsDeviceManager));
                 if (deviceManager == null)
                     return;
-                ((GraphicsDeviceManager)deviceManager).ForceSetFullScreen();
+                //((GraphicsDeviceManager)deviceManager).ForceSetFullScreen();
                 ((AndroidGameWindow)Game.Window).GameView.RequestFocus();
                 if (_orientationListener.CanDetectOrientation())
                     _orientationListener.Enable();
