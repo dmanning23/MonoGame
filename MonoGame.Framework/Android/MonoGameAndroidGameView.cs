@@ -1111,52 +1111,52 @@ namespace Microsoft.Xna.Framework
 
         #region Key and Motion
 
-        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
-        {
-            bool handled = false;
-            if (GamePad.OnKeyDown(keyCode, e))
-                return true;
+//        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+//        {
+//            bool handled = false;
+//            if (GamePad.OnKeyDown(keyCode, e))
+//                return true;
 
-            handled = Keyboard.KeyDown(keyCode);
-#if !OUYA
-            // we need to handle the Back key here because it doesnt work any other way
-            if (keyCode == Keycode.Back)
-            {
-                GamePad.Back = true;
-                handled = true;
-            }
-#endif
-            if (keyCode == Keycode.VolumeUp)
-            {
-                AudioManager audioManager = (AudioManager)Context.GetSystemService(Context.AudioService);
-                audioManager.AdjustStreamVolume(Stream.Music, Adjust.Raise, VolumeNotificationFlags.ShowUi);
-                return true;
-            }
+//            handled = Keyboard.KeyDown(keyCode);
+//#if !OUYA
+//            // we need to handle the Back key here because it doesnt work any other way
+//            if (keyCode == Keycode.Back)
+//            {
+//                GamePad.Back = true;
+//                handled = true;
+//            }
+//#endif
+//            if (keyCode == Keycode.VolumeUp)
+//            {
+//                AudioManager audioManager = (AudioManager)Context.GetSystemService(Context.AudioService);
+//                audioManager.AdjustStreamVolume(Stream.Music, Adjust.Raise, VolumeNotificationFlags.ShowUi);
+//                return true;
+//            }
 
-            if (keyCode == Keycode.VolumeDown)
-            {
-                AudioManager audioManager = (AudioManager)Context.GetSystemService(Context.AudioService);
-                audioManager.AdjustStreamVolume(Stream.Music, Adjust.Lower, VolumeNotificationFlags.ShowUi);
-                return true;
-            }
+//            if (keyCode == Keycode.VolumeDown)
+//            {
+//                AudioManager audioManager = (AudioManager)Context.GetSystemService(Context.AudioService);
+//                audioManager.AdjustStreamVolume(Stream.Music, Adjust.Lower, VolumeNotificationFlags.ShowUi);
+//                return true;
+//            }
 
-            return handled;
-        }
+//            return handled;
+//        }
 
-        public override bool OnKeyUp(Keycode keyCode, KeyEvent e)
-        {
-            if (GamePad.OnKeyUp(keyCode, e))
-                return true;
-            return Keyboard.KeyUp(keyCode);
-        }
+//        public override bool OnKeyUp(Keycode keyCode, KeyEvent e)
+//        {
+//            if (GamePad.OnKeyUp(keyCode, e))
+//                return true;
+//            return Keyboard.KeyUp(keyCode);
+//        }
 
-        public override bool OnGenericMotionEvent(MotionEvent e)
-        {
-            if (GamePad.OnGenericMotionEvent(e))
-                return true;
+//        public override bool OnGenericMotionEvent(MotionEvent e)
+//        {
+//            if (GamePad.OnGenericMotionEvent(e))
+//                return true;
 
-            return base.OnGenericMotionEvent(e);
-        }
+//            return base.OnGenericMotionEvent(e);
+//        }
 
         #endregion
 
