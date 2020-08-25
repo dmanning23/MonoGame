@@ -444,7 +444,7 @@ namespace Microsoft.Xna.Framework
             }
 
             // trigger callbacks, must pause openAL device here
-            OnPauseGameThread(this, EventArgs.Empty);
+            OnPauseGameThread?.Invoke(this, EventArgs.Empty);
 
             // go to next state
             lock (_lockObject)
@@ -522,7 +522,7 @@ namespace Microsoft.Xna.Framework
                 else if (glSurfaceAvailable) // finish state if surface created, may take a frame or two until the android UI thread callbacks fire
                 {
                     // trigger callbacks, must resume openAL device here
-                    OnResumeGameThread(this, EventArgs.Empty);
+                    OnResumeGameThread?.Invoke(this, EventArgs.Empty);
 
                     // go to next state
                     _internalState = InternalState.Running_GameThread;

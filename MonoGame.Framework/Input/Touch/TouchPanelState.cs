@@ -436,11 +436,13 @@ namespace Microsoft.Xna.Framework.Input.Touch
 
                             // If we're not dragging try to process a hold event.
                             var dist = Vector2.Distance(touch.Position, touch.PressPosition);
-                            if (_dragGestureStarted == GestureType.None && dist < TapJitterTolerance)
-                            {
-                                ProcessHold(touch);
-                                break;
-                            }
+                            // if (_dragGestureStarted == GestureType.None && dist < TapJitterTolerance)
+                            //{
+                                if (ProcessHold(touch))
+                                {
+                                    break;
+                                }
+                            //}
 
                             // If the touch state has changed then do a drag gesture.
                             if (stateChanged)
@@ -542,14 +544,14 @@ namespace Microsoft.Xna.Framework.Input.Touch
             }
         }
 
-        private void ProcessHold(TouchLocation touch)
+        private bool ProcessHold(TouchLocation touch)
         {
             if (!GestureIsEnabled(GestureType.Hold) || _holdDisabled)
-                return;
+                return false;
 
             var elapsed = CurrentTimestamp - touch.PressTimestamp;
             if (elapsed < TimeRequiredForHold)
-                return;
+                return false;
 
             _holdDisabled = true;
 
@@ -558,6 +560,8 @@ namespace Microsoft.Xna.Framework.Input.Touch
                                     touch.Timestamp,
                                     touch.Position, Vector2.Zero,
                                     Vector2.Zero, Vector2.Zero));
+
+            return true;
         }
 
         private bool ProcessDoubleTap(TouchLocation touch)

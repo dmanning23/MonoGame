@@ -108,26 +108,26 @@ namespace Microsoft.Xna.Framework.Audio
         /// </summary>
 		private OpenALSoundController()
         {
-            if (!OpenSoundController())
-            {
-                throw new NoAudioHardwareException("OpenAL device could not be initialized, see console output for details.");
-            }
+   //         if (!OpenSoundController())
+   //         {
+   //             throw new NoAudioHardwareException("OpenAL device could not be initialized, see console output for details.");
+   //         }
 
-            if (Alc.IsExtensionPresent(_device, "ALC_EXT_CAPTURE"))
-                Microphone.PopulateCaptureDevices();
+   //         if (Alc.IsExtensionPresent(_device, "ALC_EXT_CAPTURE"))
+   //             Microphone.PopulateCaptureDevices();
 
-            // We have hardware here and it is ready
+   //         // We have hardware here and it is ready
 
-			allSourcesArray = new int[MAX_NUMBER_OF_SOURCES];
-			AL.GenSources(allSourcesArray);
-            ALHelper.CheckError("Failed to generate sources.");
-            Filter = 0;
-            if (Efx.IsInitialized)
-            {
-                Filter = Efx.GenFilter();
-            }
-            availableSourcesCollection = new List<int>(allSourcesArray);
-			inUseSourcesCollection = new List<int>();
+			//allSourcesArray = new int[MAX_NUMBER_OF_SOURCES];
+			//AL.GenSources(allSourcesArray);
+   //         ALHelper.CheckError("Failed to generate sources.");
+   //         Filter = 0;
+   //         if (Efx.IsInitialized)
+   //         {
+   //             Filter = Efx.GenFilter();
+   //         }
+   //         availableSourcesCollection = new List<int>(allSourcesArray);
+			//inUseSourcesCollection = new List<int>();
 		}
 
         ~OpenALSoundController()
@@ -370,7 +370,7 @@ namespace Microsoft.Xna.Framework.Audio
                     if(_oggstreamer != null)
                         _oggstreamer.Dispose();
 #endif
-                    for (int i = 0; i < allSourcesArray.Length; i++)
+                    for (int i = 0; i < allSourcesArray?.Length; i++)
                     {
                         AL.DeleteSource(allSourcesArray[i]);
                         ALHelper.CheckError("Failed to delete source.");
