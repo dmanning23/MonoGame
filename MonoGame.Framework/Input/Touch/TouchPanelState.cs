@@ -578,7 +578,7 @@ namespace Microsoft.Xna.Framework.Input.Touch
             // Check that this tap happened within the standard 
             // double tap time threshold of 300 milliseconds.
             var elapsed = touch.Timestamp - _lastTap.Timestamp;
-            if (elapsed.TotalMilliseconds > 300)
+            if (elapsed.TotalMilliseconds > 500)
                 return false;
 
             GestureList.Enqueue(new GestureSample(
