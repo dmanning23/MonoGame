@@ -11,14 +11,14 @@ using CoreGraphics;
 
 namespace Microsoft.Xna.Framework
 {
-    class iOSGameViewController : 
+    public class iOSGameViewController : 
     #if TVOS
         GameController.GCEventViewController
     #else
         UIViewController
     #endif
     {
-        iOSGamePlatform _platform;
+        protected iOSGamePlatform Platform { get; set; }
         #if TVOS
         IPlatformBackButton platformBackButton;
         #endif
@@ -27,7 +27,7 @@ namespace Microsoft.Xna.Framework
         {
             if (platform == null)
                 throw new ArgumentNullException("platform");
-            _platform = platform;
+            Platform = platform;
             SupportedOrientations = 
                 DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight 
                 | DisplayOrientation.Portrait | DisplayOrientation.PortraitDown;
@@ -64,7 +64,7 @@ namespace Microsoft.Xna.Framework
                 #endif
             }
 
-            base.View = new iOSGameView(_platform, frame);
+            base.View = new iOSGameView(Platform, frame);
 
             // Need to set resize mask to ensure a view resize (which in iOS 8+ corresponds with a rotation) adjusts
             // the view and underlying CALayer correctly
@@ -109,7 +109,7 @@ namespace Microsoft.Xna.Framework
         #region Hide statusbar for iOS 7 or newer
         public override bool PrefersStatusBarHidden()
         {
-            return _platform.Game.graphicsDeviceManager.IsFullScreen;
+            return Platform.Game.graphicsDeviceManager.IsFullScreen;
         }
         #endregion
 
@@ -154,7 +154,7 @@ namespace Microsoft.Xna.Framework
         {
             get
             {
-                return _platform.Game.graphicsDeviceManager.IsFullScreen ? UIRectEdge.All : base.PreferredScreenEdgesDeferringSystemGestures;
+                return Platform.Game.graphicsDeviceManager.IsFullScreen ? UIRectEdge.All : base.PreferredScreenEdgesDeferringSystemGestures;
             }
         }
 

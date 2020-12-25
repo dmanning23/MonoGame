@@ -17,12 +17,14 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Microsoft.Xna.Framework
 {
+    public delegate GamePlatform GetGamePlatform(Game game);
+
     public partial class Game : IDisposable
     {
         private GameComponentCollection _components;
         private GameServiceContainer _services;
         private ContentManager _content;
-        internal GamePlatform Platform;
+        public GamePlatform Platform { get; set; }
 
         private SortingFilteringCollection<IDrawable> _drawables =
             new SortingFilteringCollection<IDrawable>(
@@ -56,7 +58,9 @@ namespace Microsoft.Xna.Framework
         private bool _shouldExit;
         private bool _suppressDraw;
 
-        partial void PlatformConstruct();       
+        partial void PlatformConstruct();
+
+        protected virtual GetGamePlatform GetGamePlatform => null;
 
         public Game()
         {
@@ -67,7 +71,15 @@ namespace Microsoft.Xna.Framework
             _components = new GameComponentCollection();
             _content = new ContentManager(_services);
 
-            Platform = GamePlatform.PlatformCreate(this);
+            if (null != GetGamePlatform)
+            {
+                Platform = GetGamePlatform(this);
+            }
+            else
+            {
+                Platform = GamePlatform.PlatformCreate(this);
+            }
+
             Platform.Activated += OnActivated;
             Platform.Deactivated += OnDeactivated;
             _services.AddService(typeof(GamePlatform), Platform);

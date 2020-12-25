@@ -86,7 +86,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 namespace Microsoft.Xna.Framework {
 
     [Register("iOSGameView")]
-	partial class iOSGameView : UIView {
+	public partial class iOSGameView : UIView {
 		private readonly iOSGamePlatform _platform;
 		private int _colorbuffer;
 		private int _depthbuffer;

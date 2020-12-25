@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.Xna.Framework
 {
-    partial class GamePlatform
+    public partial class GamePlatform
     {
         internal static GamePlatform PlatformCreate(Game game)
         {

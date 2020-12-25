@@ -84,7 +84,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Microsoft.Xna.Framework
 {
-    class iOSGamePlatform : GamePlatform
+    public class iOSGamePlatform : GamePlatform
     {
         private iOSGameViewController _viewController;
         private UIWindow _mainWindow;
@@ -95,8 +95,8 @@ namespace Microsoft.Xna.Framework
             base(game)
         {
             game.Services.AddService(typeof(iOSGamePlatform), this);
-			
-			// Setup our OpenALSoundController to handle our SoundBuffer pools
+
+            // Setup our OpenALSoundController to handle our SoundBuffer pools
             try
             {
                 OpenALSoundController soundControllerInstance = OpenALSoundController.GetInstance;
@@ -111,26 +111,31 @@ namespace Microsoft.Xna.Framework
 
             _applicationObservers = new List<NSObject>();
 
-            #if !TVOS
+#if !TVOS
             UIApplication.SharedApplication.SetStatusBarHidden(true, UIStatusBarAnimation.Fade);
-            #endif
+#endif
 
             // Create a full-screen window
-            _mainWindow = new UIWindow (UIScreen.MainScreen.Bounds);
-			//_mainWindow.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
-			
-            game.Services.AddService (typeof(UIWindow), _mainWindow);
+            _mainWindow = new UIWindow(UIScreen.MainScreen.Bounds);
+            //_mainWindow.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
 
-            _viewController = new iOSGameViewController(this);
-            game.Services.AddService (typeof(UIViewController), _viewController);
-            Window = new iOSGameWindow (_viewController);
+            game.Services.AddService(typeof(UIWindow), _mainWindow);
 
-            _mainWindow.Add (_viewController.View);
+            _viewController = GetViewController();
+            game.Services.AddService(typeof(UIViewController), _viewController);
+            Window = new iOSGameWindow(_viewController);
+
+            _mainWindow.Add(_viewController.View);
 
             _viewController.InterfaceOrientationChanged += ViewController_InterfaceOrientationChanged;
 
             //(SJ) Why is this called here when it's not in any other project
             //Guide.Initialise(game);
+        }
+
+        public virtual iOSGameViewController GetViewController()
+        {
+            return new iOSGameViewController(this);
         }
 
         public override void TargetElapsedTimeChanged ()
