@@ -108,6 +108,9 @@ namespace Microsoft.Xna.Framework {
 			MultipleTouchEnabled = true;
             #endif
 			Opaque = true;
+            UserInteractionEnabled = true;
+            BackgroundColor = UIColor.Clear;
+            MultipleTouchEnabled = true;
 		}
 
 		protected override void Dispose (bool disposing)

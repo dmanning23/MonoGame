@@ -116,7 +116,11 @@ namespace Microsoft.Xna.Framework
 #endif
 
             // Create a full-screen window
-            _mainWindow = new UIWindow(UIScreen.MainScreen.Bounds);
+            _mainWindow = new UIWindow(UIScreen.MainScreen.Bounds)
+            {
+                UserInteractionEnabled = false,
+                BackgroundColor = UIColor.Clear,
+            };
             //_mainWindow.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
 
             game.Services.AddService(typeof(UIWindow), _mainWindow);
