@@ -121,10 +121,8 @@ namespace Microsoft.Xna.Framework {
 			for (int i = 0; i < touchesArray.Length; ++i) {
 				var touch = touchesArray [i];
 
-				//Get position touch
-				var location = touch.LocationInView (touch.View);
-                location.X += touch.View.Bounds.Left;
-                location.Y += touch.View.Bounds.Top;
+                //Get position touch
+                var location = touch.LocationInView (this);
 
                 var position = GetOffsetPosition (new Vector2 ((float)location.X, (float)location.Y), true);
 				var id = touch.Handle.ToInt32 ();
