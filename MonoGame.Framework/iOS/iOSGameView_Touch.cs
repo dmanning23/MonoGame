@@ -78,12 +78,14 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Microsoft.Xna.Framework {
-	partial class iOSGameView {
-		
-		static GestureType EnabledGestures
-		{
-			get { return TouchPanel.EnabledGestures; }
-		}
+    partial class iOSGameView {
+
+        static GestureType EnabledGestures
+        {
+            get { return TouchPanel.EnabledGestures; }
+        }
+
+        public UIView TouchView { get;set;}
 		
 		#region Touches
 
@@ -120,6 +122,12 @@ namespace Microsoft.Xna.Framework {
 			var touchesArray = touches.ToArray<UITouch> ();
 			for (int i = 0; i < touchesArray.Length; ++i) {
 				var touch = touchesArray [i];
+
+                //We only want touches that are captured by the correct view
+                if (TouchView != null && touch.View != TouchView)
+                {
+                    continue;
+                }
 
                 //Get position touch
                 var location = touch.LocationInView (this);
