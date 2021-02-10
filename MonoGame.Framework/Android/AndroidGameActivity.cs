@@ -2,17 +2,15 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.V7.App;
-using Android.Views;
+using System;
 
 namespace Microsoft.Xna.Framework
 {
-	[CLSCompliant(false)]
-    public class AndroidGameActivity : AppCompatActivity
+    [CLSCompliant(false)]
+    public class AndroidGameActivity : Activity
     {
         internal Game Game { private get; set; }
 
