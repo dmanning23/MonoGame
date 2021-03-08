@@ -105,6 +105,8 @@ namespace Microsoft.Xna.Framework
 
         #region IDisposable Implementation
 
+        private object disposeLock = new object();
+
         private bool _isDisposed;
         public void Dispose()
         {
@@ -115,50 +117,56 @@ namespace Microsoft.Xna.Framework
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            lock (disposeLock)
             {
-                if (disposing)
+                if (!_isDisposed)
                 {
-                    // Dispose loaded game components
-                    for (int i = 0; i < _components.Count; i++)
+                    if (disposing)
                     {
-                        var disposable = _components[i] as IDisposable;
-                        if (disposable != null)
-                            disposable.Dispose();
+                        if (_components != null)
+                        {
+                            // Dispose loaded game components
+                            for (int i = 0; i < _components.Count; i++)
+                            {
+                                var disposable = _components[i] as IDisposable;
+                                if (disposable != null)
+                                    disposable.Dispose();
+                            }
+                            _components = null;
+                        }
+
+                        if (_content != null)
+                        {
+                            _content.Dispose();
+                            _content = null;
+                        }
+
+                        if (_graphicsDeviceManager != null)
+                        {
+                            (_graphicsDeviceManager as GraphicsDeviceManager).Dispose();
+                            _graphicsDeviceManager = null;
+                        }
+
+                        if (Platform != null)
+                        {
+                            Platform.Activated -= OnActivated;
+                            Platform.Deactivated -= OnDeactivated;
+                            _services.RemoveService(typeof(GamePlatform));
+
+                            Platform.Dispose();
+                            Platform = null;
+                        }
+
+                        ContentTypeReaderManager.ClearTypeCreators();
+
+                        SoundEffect.PlatformShutdown();
                     }
-                    _components = null;
-
-                    if (_content != null)
-                    {
-                        _content.Dispose();
-                        _content = null;
-                    }
-
-                    if (_graphicsDeviceManager != null)
-                    {
-                        (_graphicsDeviceManager as GraphicsDeviceManager).Dispose();
-                        _graphicsDeviceManager = null;
-                    }
-
-                    if (Platform != null)
-                    {
-                        Platform.Activated -= OnActivated;
-                        Platform.Deactivated -= OnDeactivated;
-                        _services.RemoveService(typeof(GamePlatform));
-
-                        Platform.Dispose();
-                        Platform = null;
-                    }
-
-                    ContentTypeReaderManager.ClearTypeCreators();
-
-                    SoundEffect.PlatformShutdown();
-                }
 #if ANDROID
                 Activity = null;
 #endif
-                _isDisposed = true;
-                _instance = null;
+                    _isDisposed = true;
+                    _instance = null;
+                }
             }
         }
 
@@ -223,7 +231,7 @@ namespace Microsoft.Xna.Framework
 
         public bool IsActive
         {
-            get { return Platform.IsActive; }
+            get { return Platform?.IsActive ?? false; }
         }
 
         public bool IsMouseVisible

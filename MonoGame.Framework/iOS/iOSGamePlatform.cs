@@ -177,7 +177,14 @@ namespace Microsoft.Xna.Framework
         //        controller.
         public iOSGameViewController ViewController
         {
-            get { return _viewController; }
+            get
+            {
+                return _viewController;
+            }
+            set
+            {
+                _viewController = value;
+            }
         }
 
         protected override void Dispose(bool disposing)
