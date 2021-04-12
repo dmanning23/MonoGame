@@ -1,7 +1,7 @@
 #region License
 // /*
 // Microsoft Public License (Ms-PL)
-// XnaTouch - Copyright © 2009-2010 The XnaTouch Team
+// XnaTouch - Copyright ? 2009-2010 The XnaTouch Team
 //
 // All rights reserved.
 // 
@@ -55,17 +55,17 @@ namespace Microsoft.Xna.Framework.Input.Touch
         /// <returns><see cref="TouchCollection"/></returns>
         public static TouchCollection GetState()
         {
-            return PrimaryWindow.TouchPanelState.GetState();
+            return PrimaryWindow?.TouchPanelState?.GetState() ?? new TouchCollection();
         }
 
         public static TouchPanelState GetState(GameWindow window)
         {
-            return window.TouchPanelState;
+            return window?.TouchPanelState;
         }
 
         public static TouchPanelCapabilities GetCapabilities()
         {
-            return PrimaryWindow.TouchPanelState.GetCapabilities();
+            return PrimaryWindow?.TouchPanelState?.GetCapabilities() ?? new TouchPanelCapabilities();
         }
 
         internal static void AddEvent(int id, TouchLocationState state, Vector2 position)
